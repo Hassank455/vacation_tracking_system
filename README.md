@@ -91,10 +91,10 @@ The Vacation Tracking System (VTS) aims to provide employees with the ability to
 ## 📊 System Diagrams
 
 ### 1) Employee Flowchart
-![Employee Flow](docs/employee flowchart.png)
+![Employee Flow](docs/employee_flowchart.png)
 
 ### 2) Manager Flowchart
-![Manager Flow](docs/manger flowchart.png)
+![Manager Flow](docs/manager_flowchart.png)
 
 ### 3) Sequence Diagram
 ![VTS Sequence Diagram](docs/sequence_vts.svg)
