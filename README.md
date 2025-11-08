@@ -18,6 +18,13 @@ Centered around the management of employee vacation time, sick leave, and person
 
 ---
 
+
+# 🧩 Use Case 1 — Manage Time
+
+This use case focuses on enabling employees to submit, track, and manage vacation or leave requests, while allowing managers to review and approve them.
+
+---
+
 ## ⚙️ Functional Requirements (Merged)
 
 1. **Rules-based validation engine** for leave requests (policy limits, balances, blackout periods, tenure rules, etc.).
