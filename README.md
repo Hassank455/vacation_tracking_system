@@ -2,89 +2,69 @@
 
 A centralized internal system for managing employee vacation requests, approvals, balances, and HR workflows.
 
-## 🧭 Vision
-The Vacation Tracking System (VTS) aims to provide employees with the ability to manage their own vacation, sick, and personal leave time **without needing deep knowledge of company policies**.
+---
 
-### 🎯 Objectives
-- Empower employees to manage their leave independently.
-- Streamline HR department operations.
-- Reduce administrative overhead on management.
-- Accelerate approval workflows and response times.
-- Improve employee experience and satisfaction.
+## 🧭 Vision (Consolidated)
 
-> **Primary Design Goal:**  
-> The system must be **easy to use**, **intuitive**, and **intelligent**.
+* Improve internal business processes by reducing the time needed to manage vacation time requests.
+* Empower employees to manage their own vacation, sick, and personal leave without deep policy knowledge.
+* Primary design goal: the system must be **easy to use**, **intuitive**, and **intelligent**.
 
 ---
 
-## ⚙️ Functional Requirements
-1. Implement a flexible **rules-based engine** for validating leave requests.
-2. Support **optional manager approval** depending on employee role and level.
-3. Allow access to vacation records from the **previous year** and up to **1.5 years ahead**.
-4. Send **email notifications** for approvals and status changes.
-5. Integrate with the **Intranet Portal** and support **Single Sign-On**.
-6. Maintain **activity logs** for all actions.
-7. Allow **HR / Admins** to override actions with full audit tracking.
-8. Managers can **grant personal leave directly** within rule limits.
-9. Provide an **internal API** for querying vacation summaries.
-10. Integrate with **legacy HR systems** to sync employee and leave data.
+## 🧠 Problem Domain
+
+Centered around the management of employee vacation time, sick leave, and personal time off within an organization.
 
 ---
 
-## 🧩 Non-Functional Requirements
-| Requirement        | Description |
-|-------------------|-------------|
-| Ease of Use       | UI must be simple, clear, and employee-friendly. |
-| Scalability       | Supports many users with no performance loss. |
-| Performance       | Core requests must respond quickly. |
-| Reliability       | Consistent state and accurate transactions. |
-| Security          | SSO + Role-Based Access Control. |
-| Integration       | Works smoothly with current HR systems and intranet. |
-| Maintainability   | Clean, extendable architecture. |
-| Auditability      | Complete traceability of every action. |
+## ⚙️ Functional Requirements (Merged)
+
+1. **Rules-based validation engine** for leave requests (policy limits, balances, blackout periods, tenure rules, etc.).
+2. **Optional manager approval** depending on role/level; some senior roles may bypass approval.
+3. **Notifications** via email (and portal inbox if available) to employees and managers on submit/approve/reject/cancel.
+4. **Single Sign-On** (SSO) via the organization’s portal; use the portal’s user context for all authentication.
+5. **Activity logs** for all transactions (auditable: who, what, when, before/after values, IP/device).
+6. **HR & System Administration overrides** with full audit tracking (amend, grant, revoke, correct balances).
+7. **Managers can directly grant personal/comp time** within configured limits.
+8. **Integration services** with legacy HR/Payroll/Directory to sync employees, calendars, and balances.
+9. **Vacation timeline access window:** view prior year records and plan up to **1.5 years ahead**.
+10. **Self-service dashboard** for employees (submit, track, cancel) and managers (review queues, filters, bulk actions).
+11. **Internal API** for querying summaries (e.g., per-employee/year, team calendar, remaining balances).
+12. **Balance lookup** on request creation and after status changes to ensure consistency.
 
 ---
 
-## ⛔ Constraints
-1. The system must be a **web application** (not desktop).
-2. Must **extend the existing Intranet Portal**.
-3. Must **reuse current hardware and middleware**.
-4. Must use **existing Single Sign-On** for authentication.
-5. HR is responsible for updating employee leave records.
-6. Certain senior roles may **skip manager approval**.
+## 🧩 Non-Functional Requirements (Merged)
+
+* **Usability:** UI must be simple, clear, and employee-friendly (primary design goal).
+* **Performance:** Core operations (submit, approve, fetch balances) should complete within acceptable SLAs (e.g., P95 < 1s for reads, < 2s for writes where feasible).
+* **Scalability:** Support organization-wide usage (concurrent users, seasonal peaks) without degradation.
+* **Reliability & Consistency:** Accurate balances and idempotent operations; safe retries.
+* **Security:** SSO + RBAC; least privilege; sensitive fields masked; audit immutability.
+* **Maintainability:** Clean, modular architecture; testable services; configuration-driven rules.
+* **Auditability:** End-to-end trace of every state change.
+* **Observability:** Metrics, logs, and alerts (errors, latency, queue depth).
 
 ---
 
-## 💭 Assumptions
-1. All employees have active intranet accounts.
-2. HR maintains centralized employee and leave policy data.
-3. Email delivery is available via the internal mail server.
-4. Managers and staff are familiar with company tools.
-5. Leave rules are predefined and available.
-6. Legacy HR systems provide API/DB integration points.
-7. Network stability within intranet is reliable.
-8. The organization has full control of its infrastructure.
+## ⛔ Constraints (Merged)
+
+1. **Web application** within the existing **Intranet Portal**.
+2. Must **reuse existing hardware and middleware**.
+3. Must use **existing SSO** for authentication.
+4. Respect **legacy integrations** (HR/Payroll) and their data contracts.
+5. **HR** remains the source of truth for policy and employee master data.
 
 ---
 
 ## 🎭 System Actors
 
-| Actor               | Responsibilities |
-|---------------------|-----------------|
-| **Employee**        | Submit / track / cancel leave requests; view balances. |
-| **Manager**         | Approve / reject requests; grant compensatory leave. |
-| **HR Clerk**        | Manage policies, records, and override decisions. |
-| **System Administrator** | Maintain uptime, logs, backups, and config. |
-| **Email Service**   | Sends notification messages to employees & managers. |
-
----
-
-## 🏛️ High-Level Flow (Summary)
-1. Employee submits leave request.
-2. System validates request using business rules.
-3. If required → Manager approves/denies.
-4. Request status is updated & notifications are sent.
-5. HR updates master leave records when needed.
+* **Employee** — submit/track/cancel leave; view balances.
+* **Manager** — review/approve/reject; grant comp/personal leave within limits.
+* **HR Clerk** — manage policies/records; override decisions.
+* **System Administrator** — configure, maintain uptime, logs, backups.
+* **Email Service** — delivers notifications.
 
 ---
 
@@ -96,6 +76,17 @@ The Vacation Tracking System (VTS) aims to provide employees with the ability to
 ### 2) Manager Flowchart
 ![Manager Flow](docs/manager_flowchart.png)
 
-### 3) Sequence Diagram
+---
+
+## 🔁 Sequence Diagrams (Split)
+
+### A) Employee — Manage Time (Submit Leave Request)
+
 ![VTS Sequence Diagram](docs/employee_sequence_diagram_mange_time.svg)
+
+### B) Manager — Review & Decision
+
+![VTS Sequence Diagram](docs/manger_sequence_diagram_mange_time.svg)
+
+
 
