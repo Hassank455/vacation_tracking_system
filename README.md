@@ -95,5 +95,81 @@ This use case focuses on enabling employees to submit, track, and manage vacatio
 
 ![VTS Sequence Diagram](docs/manger_sequence_diagram_mange_time.svg)
 
+---
 
+# 🧩 Use Case 2 — Cancel Approved Request
+
+This use case describes the process in which an **employee cancels a previously approved vacation time request** that is either scheduled for a future date or within the recent past (last 5 business days).
+
+---
+
+## 🎯 Goal
+Allow employees to **cancel an approved vacation request**, ensuring:
+- Updated balances are immediately reflected.
+- Managers are notified of the cancellation.
+- HR records remain synchronized and auditable.
+
+---
+
+## ⚙️ Preconditions
+1. The employee has an **approved** vacation request.  
+2. The request is scheduled in the **future** or within the **past 5 business days**.  
+3. The employee is **authenticated via SSO** and authorized to use the VTS system.  
+
+---
+
+## 🧩 Main Flow
+1. The **employee** navigates to the VTS home page through the intranet portal.  
+2. The **portal (SSO)** authenticates the employee and opens VTS with the user context.  
+3. The **VTS Web** displays:
+   - A summary of vacation requests (past 6 months → next 18 months).  
+   - Outstanding balances per vacation type.  
+4. The **employee** selects an approved request (future or recent past) to cancel.  
+5. The **VTS Web** retrieves details of the request and checks eligibility:
+   - Must be “Approved” status.  
+   - Must be within the valid time range.  
+6. The employee is prompted for confirmation:
+   - **If future:** Confirm cancellation.  
+   - **If recent past:** Confirm cancellation **and** provide a short explanation.  
+7. If confirmed:
+   - **VTS Web → HR Legacy:** Update request status to **Canceled**.  
+   - Return used hours to the employee’s balance.  
+   - **VTS Web → Email Service:** Send a cancellation notification to the manager.  
+8. **VTS Web** refreshes the summary and returns the employee to the home screen.  
+9. If the employee aborts, **no changes** occur.  
+
+---
+
+## 🔄 Alternate Flow — Employee Aborts Cancellation
+1. The employee clicks **Cancel** on the confirmation dialog.  
+2. No data is changed.  
+3. The employee is returned to the home screen.
+
+---
+
+## 📬 Postconditions
+- Request status is **Updated → Canceled**.  
+- **Balance** is **recalculated** and displayed correctly.  
+- **Manager** receives an **email notification**.  
+- All actions are recorded in **audit logs**.
+
+---
+
+## 📈 System Interaction Summary
+
+| Actor        | Action                 | Outcome                                     |
+|--------------|------------------------|---------------------------------------------|
+| Employee     | Confirms cancellation  | Request canceled; balance restored          |
+| Employee     | Aborts                 | No change                                   |
+| HR Legacy    | Updates record         | State changed to **Canceled**               |
+| Email Service| Sends notification     | Manager informed of cancellation            |
+
+---
+
+## 🔁 Sequence Diagram — Cancel Approved Request
+
+![VTS Sequence Diagram – Cancel Approved Request](docs/employee_sequence_diagram_cancel_approved_request.svg)
+
+
+---
 
