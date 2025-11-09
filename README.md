@@ -166,6 +166,12 @@ Allow employees to **cancel an approved vacation request**, ensuring:
 
 ---
 
+## 🧭 Flowchart — Cancel Approved Request
+
+![VTS Flowchart – Cancel Approved Request](docs/employee_flowchart_diagram_cancel_approved_request.jpg)
+
+---
+
 ## 🔁 Sequence Diagram — Cancel Approved Request
 
 ![VTS Sequence Diagram – Cancel Approved Request](docs/employee_sequence_diagram_cancel_approved_request.svg)
